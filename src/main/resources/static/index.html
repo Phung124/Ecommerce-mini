@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium E-Commerce</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Overlay Background -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="container header-container">
+            <h1 class="logo">E-<span>Store</span></h1>
+            <nav class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn tooltip" data-tooltip="Search"><i class="fas fa-search"></i></button>
+                <button class="icon-btn tooltip cart-btn" data-tooltip="Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </button>
+                <div class="user-menu" id="userMenu">
+                    <button class="primary-btn login-btn" onclick="openLoginModal()">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-text">
+                <h2>Discover Your Next <span class="gradient-text">Favorite</span> Item</h2>
+                <p>Curated collections of premium quality products designed just for you. Explore the future of shopping today.</p>
+                <button class="primary-btn lg-btn" onclick="document.getElementById('products').scrollIntoView()">Shop Now <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="hero-image">
+                <!-- Using a placeholder design representation -->
+                <div class="hero-card glass-card">
+                    <i class="fas fa-gem fa-4x gradient-text"></i>
+                    <h3>Premium Collection</h3>
+                    <p>New arrivals styling</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Grid -->
+        <section class="products-section" id="products">
+            <h3 class="section-title">Trending <span class="gradient-text">Products</span></h3>
+            <div class="filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Electronics</button>
+                <button class="filter-btn">Fashion</button>
+                <button class="filter-btn">Accessories</button>
+            </div>
+            
+            <div class="product-grid" id="productGrid">
+                <!-- Products will be injected by JavaScript -->
+                <div class="loading-spinner"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login/Register Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content glass-card">
+            <button class="close-btn" onclick="closeLoginModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-header">
+                <h3 id="modalTitle">Welcome Back</h3>
+                <p id="modalDesc">Sign in to your account to continue</p>
+            </div>
+            <form id="authForm" onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Enter username" required>
+                    </div>
+                </div>
+                <div class="form-group" id="emailGroup" style="display: none;">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Enter email">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter password" required>
+                    </div>
+                </div>
+                <button type="submit" class="primary-btn full-width" id="authSubmitBtn">Sign In</button>
+                
+                <p class="auth-switch">
+                    <span id="authPrompt">Don't have an account?</span>
+                    <a href="#" onclick="toggleAuthMode(event)" id="authToggleLink" class="gradient-text">Sign Up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
