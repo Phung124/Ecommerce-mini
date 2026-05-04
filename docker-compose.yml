@@ -1,26 +1,39 @@
 version: '3.8'
-
 services:
-  # 1. Cơ sở dữ liệu MySQL
+  # 1. Ứng dụng Spring Boot của bạn
+  backend:
+    build: .                 # Chỉ cho Docker biết Dockerfile nằm ở thư mục hiện tại
+    container_name: ecommerce-api
+    ports:
+      - "8080:8080"          # Mở port cho API ra ngoài
+    depends_on:
+      - db                   # Đảm bảo DB chạy lên trước khi Backend chạy
+      - redis
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/phung
+      - SPRING_DATASOURCE_USERNAME=Phung
+      - SPRING_DATASOURCE_PASSWORD=Phung
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PORT=6379
+  # 2. Cơ sở dữ liệu PostgreSQL
   db:
-    image: mysql:8.0
+    image: postgres:15-alpine
     container_name: ecommerce-db
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: phung
+      POSTGRES_USER: Phung
+      POSTGRES_PASSWORD: Phung
+      POSTGRES_DB: phung
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
-  # 2. Redis Cache (Sắp tới sẽ dùng cho Phase 3)
+  # 3. Redis Cache
   redis:
     image: redis:7.0-alpine
     container_name: ecommerce-redis
     ports:
       - "6379:6379"
 
-
-
 volumes:
-  mysql_data:
+  postgres_data:
