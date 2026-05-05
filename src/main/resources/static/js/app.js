@@ -81,10 +81,25 @@ function addToCart(productId) {
         openLoginModal();
         return;
     }
-    showToast("Product added to cart!", "success");
-    // Update cart badge
-    const badge = document.querySelector('.cart-badge');
-    badge.innerText = parseInt(badge.innerText) + 1;
+    
+    fetch(`${API_BASE_URL}/cart/add`, {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + currentUser.token
+        },
+        body: JSON.stringify({ productId: productId, quantity: 1 })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Failed to add to cart");
+        showToast("Product added to cart!", "success");
+        const badge = document.getElementById('cartBadge');
+        if (badge) badge.innerText = parseInt(badge.innerText || 0) + 1;
+    })
+    .catch(err => {
+        console.error(err);
+        showToast("Error adding to cart", "error");
+    });
 }
 
 // --- Authentication UI & Logic ---
@@ -199,7 +214,15 @@ async function handleAuth(e) {
 function updateUserMenu() {
     const userMenu = document.getElementById('userMenu');
     if (currentUser) {
+        // Safe check for roles array, some backends return role strings differently
+        const roles = currentUser.roles || [];
+        const isAdmin = roles.includes('ROLE_ADMIN') || roles.includes('ADMIN');
+        const adminBtn = isAdmin ? `<button class="icon-btn tooltip" data-tooltip="Admin Panel" style="margin-right: 10px; background: var(--primary-color); color: white;" onclick="window.location.href='admin.html'"><i class="fas fa-shield-alt"></i></button>` : '';
+        
+        userMenu.style.display = 'flex';
+        userMenu.style.alignItems = 'center';
         userMenu.innerHTML = `
+            ${adminBtn}
             <div class="user-info-chip" onclick="handleLogout()">
                 <i class="fas fa-user-circle"></i>
                 <span>${currentUser.username}</span>

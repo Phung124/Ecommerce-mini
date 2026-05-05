@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - E-Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Overlay Background -->
+    <div class="blob blob-1"></div>
+
+    <!-- Header -->
+    <header class="glass-header">
+        <div class="container header-container">
+            <h1 class="logo" onclick="window.location.href='index.html'">E-<span>Store</span></h1>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#products">Products</a>
+            </nav>
+            <div class="header-actions">
+                <div class="user-menu" id="userMenu">
+                    <!-- User info injected by app.js -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <div class="page-header">
+            <h2>Your <span class="gradient-text">Shopping Cart</span></h2>
+            <p>Review your items and proceed to checkout</p>
+        </div>
+
+        <div class="cart-layout">
+            <!-- Left: Cart Items -->
+            <div class="cart-items" id="cartItemsContainer">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <!-- Right: Checkout Summary -->
+            <div class="checkout-summary glass-card">
+                <h3>Order Summary</h3>
+                <div style="margin-top: 1.5rem;">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="summarySubtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="summaryTotal" class="gradient-text">$0.00</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h4>Shipping Address</h4>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="addressSelect" style="width: 100%; padding: 0.8rem 1rem 0.8rem 2.8rem; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(15, 23, 42, 0.6); color: var(--text-primary); appearance: none;">
+                                <option value="">Select an address</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="primary-btn lg-btn full-width" style="margin-top: 1.5rem;" onclick="handleCheckout()">
+                    Place Order <i class="fas fa-check-circle"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/app.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>
