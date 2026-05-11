@@ -77,7 +77,7 @@ const Navbar = () => {
               )}
               <Link to="/profile" style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255,255,255,0.05)', padding: '8px 16px', borderRadius: '15px', textDecoration: 'none', color: 'white', border: '1px solid var(--glass-border)', transition: 'all 0.3s' }} onMouseOver={e => e.currentTarget.style.borderColor = 'var(--primary-color)'} onMouseOut={e => e.currentTarget.style.borderColor = 'var(--glass-border)'}>
                 <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--primary-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem' }}>
-                  {user.username.charAt(0).toUpperCase()}
+                  {user.username?.charAt(0).toUpperCase() || 'U'}
                 </div>
                 <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>{user.username}</span>
               </Link>
