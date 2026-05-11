@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const api = axios.create({ baseURL: '/api' });
+const api = axios.create({ baseURL: 'https://ecommerce-fontend-9jmr.onrender.com/api' });
 
 api.interceptors.request.use(config => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
