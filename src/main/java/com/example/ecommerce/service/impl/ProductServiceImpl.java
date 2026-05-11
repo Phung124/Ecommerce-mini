@@ -40,7 +40,14 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> products = productRepository.findWithFilters(name, categoryId, minPrice, maxPrice, pageable);
         
         List<ProductDTO> content = products.getContent().stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map(product -> {
+                    ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+                    if (product.getCategory() != null) {
+                        dto.setCategoryId(product.getCategory().getId());
+                        dto.setCategoryName(product.getCategory().getName());
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
         PageResponse<ProductDTO> response = new PageResponse<>();
@@ -57,7 +64,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<ProductDTO> getProductById(Long id) {
         return productRepository.findById(id)
-                .map(product -> modelMapper.map(product, ProductDTO.class));
+                .map(product -> {
+                    ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+                    if (product.getCategory() != null) {
+                        dto.setCategoryId(product.getCategory().getId());
+                        dto.setCategoryName(product.getCategory().getName());
+                    }
+                    return dto;
+                });
     }
 
     @Override
@@ -85,11 +99,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean updateProduct(Long id, ProductRequest productRequest) {
         return productRepository.findById(id).map(product -> {
-            modelMapper.map(productRequest, product);
+            product.setName(productRequest.getName());
+            product.setDescription(productRequest.getDescription());
+            product.setPrice(productRequest.getPrice());
+            product.setStock(productRequest.getStock());
+            product.setImageUrl(productRequest.getImageUrl());
+            
             if (productRequest.getCategoryId() != null) {
                 product.setCategory(categoryRepository.findById(productRequest.getCategoryId())
                         .orElseThrow(() -> new RuntimeException("Category not found")));
             }
+            
             productRepository.save(product);
             return true;
         }).orElse(false);

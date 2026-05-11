@@ -22,6 +22,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String password;
 
     @Column(unique = true, nullable = false)
@@ -34,5 +35,6 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @Column(nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private String securityStamp = java.util.UUID.randomUUID().toString();
 }

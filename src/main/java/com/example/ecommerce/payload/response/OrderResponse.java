@@ -21,4 +21,7 @@ public class OrderResponse {
     private String shippingState;
     private String shippingZipCode;
     private String shippingPhoneNumber;
+
+    private Long userId;
+    private String username;
 }

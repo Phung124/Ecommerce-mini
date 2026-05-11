@@ -41,8 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Order> orders = isAdmin ? orderRepository.findAll(pageable)
-                : orderRepository.findByUserId(userId, pageable);
+        Page<Order> orders = orderRepository.findByUserId(userId, pageable);
 
         List<OrderResponse> content = orders.stream().map(this::toOrderResponse).collect(Collectors.toList());
 
@@ -69,6 +68,8 @@ public class OrderServiceImpl implements OrderService {
         }).collect(Collectors.toList());
         dto.setItems(items);
         dto.setStatus(order.getStatus().name());
+        dto.setUserId(order.getUser().getId());
+        dto.setUsername(order.getUser().getUsername());
         return dto;
     }
 
