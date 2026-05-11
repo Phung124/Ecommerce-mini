@@ -9,8 +9,6 @@ import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +25,6 @@ public class CategoryServiceImpl implements CategoryService {
     private final ModelMapper modelMapper;
 
     @Override
-    @Cacheable(value = "categories")
     public List<CategoryResponse> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(category -> modelMapper.map(category, CategoryResponse.class))
@@ -35,7 +32,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Cacheable(value = "categories", key = "#id")
     public CategoryResponse getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
@@ -43,7 +39,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         if (categoryRepository.findByName(categoryRequest.getName()).isPresent()) {
             throw new RuntimeException("Category name already exists!");
@@ -53,7 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @CacheEvict(value = "categories", allEntries = true)
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
@@ -65,7 +59,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @CacheEvict(value = "categories", allEntries = true)
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found with id: " + id));
