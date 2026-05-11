@@ -80,12 +80,30 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("Error: Email is already in use!");
         }
 
+        // Tự động khởi tạo Roles nếu DB trống (Quan trọng cho bản Deploy mới)
+        if (roleRepository.count() == 0) {
+            Role userRole = new Role();
+            userRole.setName(RoleName.ROLE_USER);
+            Role adminRole = new Role();
+            adminRole.setName(RoleName.ROLE_ADMIN);
+            roleRepository.save(userRole);
+            roleRepository.save(adminRole);
+        }
+
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
         Set<Role> roles = new HashSet<>();
+        
+        // Nếu là người dùng đầu tiên, cấp quyền ADMIN
+        if (userRepository.count() == 0) {
+            Role adminRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
+                    .orElseThrow(() -> new RuntimeException("Error: Admin Role not found."));
+            roles.add(adminRole);
+        }
+
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         roles.add(userRole);
